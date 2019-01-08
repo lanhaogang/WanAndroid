@@ -3,12 +3,15 @@ package com.peng.wanandroid.base.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
+import butterknife.ButterKnife
+import butterknife.Unbinder
 
 import com.peng.wanandroid.base.view.BaseView
 
 abstract class BaseActivity : AppCompatActivity(), BaseView {
     private val mTipsView: TextView? = null
     protected var mIsEnableTip: Boolean? = null
+    private lateinit var mUnbinder : Unbinder
     protected abstract fun getLayoutId(): Int
     protected abstract fun initView()
     protected abstract fun initData()
@@ -16,6 +19,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getLayoutId())
+        mUnbinder = ButterKnife.bind(this)
         initView()
         initData()
     }
@@ -30,6 +34,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
 
     override fun onDestroy() {
         super.onDestroy()
+        mUnbinder.unbind()
     }
 
     override fun showErrorView() {
